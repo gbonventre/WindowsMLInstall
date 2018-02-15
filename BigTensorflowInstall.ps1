@@ -41,7 +41,7 @@ choco install adobereader -y
 choco install 7zip.install -y
 
 # Install Python 3.6
-#choco install python3 -y
+choco install python3 -y
 
 #Install Visual Studio 2017 Community Edition With Add ins
 choco install visualstudio2017community -y
@@ -178,15 +178,10 @@ refreshenv
 [string]$tempPath = $env:PATH
 [string]$currentPath = $env:PATH
 If (
-    (-NOT($curentPath -like "C:\Python36\;*")) -and
-    (-NOT($curentPath -like "*C:\Python36\;*")) -and 
-    (-NOT($curentPath -like "*C:\Python36\"))
-    ) { $tempPath += ";C:\Python36\" } 
-If (
-    (-NOT($curentPath -like "C:\Program Files\Python36;*")) -and
-    (-NOT($curentPath -like "*C:\Program Files\Python36;*")) -and 
-    (-NOT($curentPath -like "*C:\Program Files\Python36"))
-    ) { $tempPath += ";C:\Program Files\Python36" } 
+    (-NOT($curentPath -like "C:\Program Files\Python36\;*")) -and
+    (-NOT($curentPath -like "*C:\Program Files\Python36\;*")) -and 
+    (-NOT($curentPath -like "*C:\Program Files\Python36\"))
+    ) { $tempPath += ";C:\Program Files\Python36\" } 
 If (
     (-NOT($curentPath -like "C:\Program Files\Python36\Scripts\;*")) -and
     (-NOT($curentPath -like "*C:\Program Files\Python36\Scripts\;*")) -and 
@@ -196,16 +191,19 @@ If (
     (-NOT($curentPath -like "C:\Python36\Scripts\;*")) -and
     (-NOT($curentPath -like "*C:\Python36\Scripts\;*")) -and 
     (-NOT($curentPath -like "*C:\Python36\Scripts\"))
-    ) { $tempPath += ";C:\Python36\Scripts\" } 
-
-
+    ) { $tempPath += ";C:\Python36\Scripts\" }   
+If (
+    (-NOT($curentPath -like "C:\Python36\;*")) -and
+    (-NOT($curentPath -like "*C:\Python36\;*")) -and 
+    (-NOT($curentPath -like "*C:\Python36\"))
+    ) { $tempPath += ";C:\Python36\" }   
 [System.Environment]::SetEnvironmentVariable('path', $tempPath, [System.EnvironmentVariableTarget]::Machine)
 
 
 
 
 # Refresh the environment variables
- refreshenv
+ #refreshenv
 
 # Install Pycharm community Edition Python IDE
 choco install pycharm-community -y
@@ -227,6 +225,16 @@ Set-TimeZone -Name "Eastern Standard Time"
 
 
 #Start-Process -FilePath $cuda90ToolkitLoc -ArgumentList "-s compiler_8.0" -Wait -NoNewWindow
+
+
+
+
+
+
+
+
+
+
 
 
 
