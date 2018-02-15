@@ -1,4 +1,4 @@
-﻿# https://www.tensorflow.org/install/install_windows
+# https://www.tensorflow.org/install/install_windows
 # http://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/
 # https://developer.nvidia.com/cuda-90-download-archive?target_os=Windows&target_arch=x86_64&target_version=Server2016&target_type=exelocal
 # https://developer.nvidia.com/cudnn
@@ -18,19 +18,21 @@ Install-Module -Name PowerShellGet -Force
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 #choco install chocolatey-core.extension
 
+#Installs the Firefox Browser
+choco install firefox -y
+
 #chocolatey may need a restart of the shell
 
 #Installs the Google Chrome Browser
 choco install googlechrome -y
 
-#Installs the Firefox Browser
-choco install firefox -y
+
 
 #Install Git
 choco install git -y
 
 #Install Git SourceTree
-choco install sourcetree -y
+#choco install sourcetree -y
 
 #Install Adobe Reader
 choco install adobereader -y
@@ -39,21 +41,19 @@ choco install adobereader -y
 choco install 7zip.install -y
 
 # Install Python 3.6
-choco install python3 -y
+#choco install python3 -y
 
-#Install Visual Studio 2017 Community Edition
+#Install Visual Studio 2017 Community Edition With Add ins
 choco install visualstudio2017community -y
-
-# Install C++ tools for Visual Studio 2017
 choco install vcredist2017 -y
-
-#Build Tools for Visual Studio 2017
 choco install microsoft-build-tools -y
+
+#Install PowerShell Unit Testing Framework
+choco install pester -y
 
 #Install the lightweight IDE with relevant add ins
 choco install visualstudiocode -y
 choco install vscode-powershell -y
-choco install pester -y
 choco install vscode-docker -y
 choco install vscode-csharp -y
 choco install vscode-azurerm-tools -y
@@ -66,7 +66,7 @@ choco install sql-server-management-studio -y
 choco install microsoftazurestorageexplorer -y
 
 # Installs the Azure commandlets
-Install-Module -Name AzureRM 
+Install-Module -Name AzureRM -AllowClobber
 
 #Install Azure CLI
 choco install azure-cli -y
@@ -149,23 +149,73 @@ start-process -FilePath $cuda90patchLoc -ArgumentList '/S' -wait
 #Start-Process -FilePath $cuda90patchLoc -ArgumentList "-s compiler_8.0" -Wait -NoNewWindow
 
 
+#Install cuDNN v6.0
+
+
+
 # Delete all items
 Get-ChildItem -Path $tempDirectory -Include * | remove-Item -recurse
 
 
-# download and install Python 3.6
-$python3Url = "https://www.python.org/ftp/python/3.6.2/python-3.6.2-amd64.exe"
-$python3Loc = $tempDirectory + "\python3.exe"
-irm $python3Url -outfile $python3Loc
-start-process -FilePath $python3Loc -wait
+# MAX_PATh limitation of 260 characters needs to be disabled by POwerShell
 
-# Add Python 3.6 To the Environment
-[Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\Program Files\Python36")
+# download and install Python 3.6
+#$python3Url = "https://www.python.org/ftp/python/3.6.2/python-3.6.2-amd64.exe"
+#$python3Loc = $tempDirectory + "\python3.exe"
+#irm $python3Url -outfile $python3Loc
+#start-process -FilePath $python3Loc -wait
+
+
+# check to see if path extensions .py and .pyw exist then update
+[string]$tempPathExt = $env:PATHEXT
+[string]$currentPathExt = $env:PATHEXT
+If (-NOT($curentPathExt -like "*.PY*")) { $tempPathExt += ";.PY" } 
+If (-NOT($curentPathExt -like "*.PYW*")) { $tempPathExt += ";.PYW" } 
+[System.Environment]::SetEnvironmentVariable('pathext', $tempPathExt, [System.EnvironmentVariableTarget]::Machine)
+refreshenv
+
+
+[string]$tempPath = $env:PATH
+[string]$currentPath = $env:PATH
+If (
+    (-NOT($curentPath -like "C:\Python36\;*")) -and
+    (-NOT($curentPath -like "*C:\Python36\;*")) -and 
+    (-NOT($curentPath -like "*C:\Python36\"))
+    ) { $tempPath += ";C:\Python36\" } 
+If (
+    (-NOT($curentPath -like "C:\Program Files\Python36;*")) -and
+    (-NOT($curentPath -like "*C:\Program Files\Python36;*")) -and 
+    (-NOT($curentPath -like "*C:\Program Files\Python36"))
+    ) { $tempPath += ";C:\Program Files\Python36" } 
+If (
+    (-NOT($curentPath -like "C:\Program Files\Python36\Scripts\;*")) -and
+    (-NOT($curentPath -like "*C:\Program Files\Python36\Scripts\;*")) -and 
+    (-NOT($curentPath -like "*C:\Program Files\Python36\Scripts\"))
+    ) { $tempPath += ";C:\Program Files\Python36" } 
+If (
+    (-NOT($curentPath -like "C:\Python36\Scripts\;*")) -and
+    (-NOT($curentPath -like "*C:\Python36\Scripts\;*")) -and 
+    (-NOT($curentPath -like "*C:\Python36\Scripts\"))
+    ) { $tempPath += ";C:\Python36\Scripts\" } 
+
+
+[System.Environment]::SetEnvironmentVariable('path', $tempPath, [System.EnvironmentVariableTarget]::Machine)
+
+
+
+
+# Refresh the environment variables
+ refreshenv
 
 # Install Pycharm community Edition Python IDE
 choco install pycharm-community -y
 
 
+
+
+
+# Install Non-GPU version of Tensorflow
+python -m pip install --upgrade tensorflow
 
 
 # Set timezone of the server
@@ -177,16 +227,6 @@ Set-TimeZone -Name "Eastern Standard Time"
 
 
 #Start-Process -FilePath $cuda90ToolkitLoc -ArgumentList "-s compiler_8.0" -Wait -NoNewWindow
-
-
-
-
-
-
-
-
-
-
 
 
 
