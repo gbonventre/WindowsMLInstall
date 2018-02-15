@@ -147,9 +147,14 @@ $cuda90patchLoc = $tempDirectory + "\cuda_9.0.176_win10_patch.exe"
 irm $cuda90PatchUrl -outfile $cuda90patchLoc
 start-process -FilePath $cuda90patchLoc -ArgumentList '/S' -wait
 #Start-Process -FilePath $cuda90patchLoc -ArgumentList "-s compiler_8.0" -Wait -NoNewWindow
+# Add to PATH
+
 
 
 #Install cuDNN v6.0
+# aDD TO PATH
+
+
 
 
 
