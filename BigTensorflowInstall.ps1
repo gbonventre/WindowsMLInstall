@@ -26,12 +26,11 @@ choco install firefox -y
 #Installs the Google Chrome Browser
 choco install googlechrome -y
 
-
-
 #Install Git
 choco install git -y
 
 #Install Git SourceTree
+# needs better parameters for silent install
 #choco install sourcetree -y
 
 #Install Adobe Reader
@@ -66,7 +65,7 @@ choco install sql-server-management-studio -y
 choco install microsoftazurestorageexplorer -y
 
 # Installs the Azure commandlets
-Install-Module -Name AzureRM -AllowClobber
+choco install windowsazurepowershell -y
 
 #Install Azure CLI
 choco install azure-cli -y
@@ -75,13 +74,16 @@ choco install azure-cli -y
 choco install azcopy -y
 
 # Install the AWS PowerShell Commandlets
-Install-Module -Name AWSPowerShell 
+choco install awstools.powershell -y
+
+#Install the AWS CLI
+choco install awscli
 
 #Install testing framework for POwerShell
 choco install pester -y
 
 # Install Git visualization tool
-choco install sourcetree -y
+#choco install sourcetree -y
 
 # Install Postman API utility
 choco install postman -y
@@ -92,21 +94,19 @@ choco install tailblazer -y
 # Install Docker
 choco install docker -y
 
-
-
 # Make the temp that holds the large install files
 $tempDirectory = "C:\temp_provision"
-md -Force $tempDirectory | Out-Null
+New-Item -ItemType directory -Path $tempDirectory -Force | Out-Null
 
 #Download Nvidia drivers for NC, NCv2, and ND Windows instances on Azure - This doesn't get NVIDIA Tesla drivers for NV series instances
 $gpuDriverUrl = "http://us.download.nvidia.com/Windows/Quadro_Certified/385.54/385.54-tesla-desktop-winserver2016-international.exe"
 $gpuDriverLoc = $tempDirectory + "\gpuDriver.zip"
-irm $gpuDriverUrl -outfile $gpuDriverLoc
+Invoke-RestMethod $gpuDriverUrl -outfile $gpuDriverLoc
 
 # Unpack the file with 7zip and then install using the exe
 $gpuDriverLoc = $tempDirectory + "\"
 $uncompressLoc = $tempDirectory + "\unpacked"
-md -Force $uncompressLoc | Out-Null
+New-Item -ItemType directory -Path $uncompressLoc -Force | Out-Null
 Get-ChildItem $gpuDriverLoc*.zip | % {& "C:\Program Files\7-Zip\7z.exe" "x" $_.fullname "-o$uncompressLoc"}
 $setupLoc = $uncompressLoce + "\setup.exe"
 Start-Process -FilePath $setupLoc -Wait -NoNewWindow
@@ -114,16 +114,15 @@ Start-Process -FilePath $setupLoc -Wait -NoNewWindow
 # Delete all items
 Get-ChildItem -Path $tempDirectory -Include * | remove-Item -recurse
 
-
 #Download Nvidia driver Patches for NC, NCv2, and ND Windows instances on Azure - This doesn't get NVIDIA Tesla driver patches for NV series instances
 $gpuDriverUrl = "https://developer.nvidia.com/compute/cuda/9.0/Prod/patches/1/cuda_9.0.176.1_windows-exe"
 $gpuDriverLoc = $tempDirectory + "\gpuDriver.zip"
-irm $gpuDriverUrl -outfile $gpuDriverLoc
+Invoke-RestMethod $gpuDriverUrl -outfile $gpuDriverLoc
 
 # Unpack the file with 7zip and then install using the exe
 $gpuDriverLoc = $tempDirectory + "\"
 $uncompressLoc = $tempDirectory + "\unpacked"
-md -Force $uncompressLoc | Out-Null
+New-Item -ItemType directory -Path $uncompressLoc -Force | Out-Null
 Get-ChildItem $gpuDriverLoc*.zip | % {& "C:\Program Files\7-Zip\7z.exe" "x" $_.fullname "-o$uncompressLoc"}
 $setupLoc = $uncompressLoc + "\setup.exe"
 Start-Process -FilePath $setupLoc -Wait -NoNewWindow
@@ -132,31 +131,22 @@ Start-Process -FilePath $setupLoc -Wait -NoNewWindow
 Get-ChildItem -Path $tempDirectory -Include * | remove-Item -recurse
 
 
-
-
-
 # download and install the Cuda 9.0 toolkit from the web
 $cuda90toolkitUrl = "https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers/cuda_9.0.176_win10-exe"
 $cuda90ToolkitLoc = $tempDirectory + "\cuda_9.0.176_win10.exe"
-irm $cuda90toolkitUrl -outfile $cuda90ToolkitLoc
+Invoke-RestMethod $cuda90toolkitUrl -outfile $cuda90ToolkitLoc
 Start-Process -FilePath $cuda90ToolkitLoc -ArgumentList "-s compiler_8.0" -Wait -NoNewWindow
 
 # download and install the Cuda 9.0 toolkit patch
 $cuda90PatchUrl = "https://developer.nvidia.com/compute/cuda/9.0/Prod/patches/1/cuda_9.0.176.1_windows-exe"
 $cuda90patchLoc = $tempDirectory + "\cuda_9.0.176_win10_patch.exe"
-irm $cuda90PatchUrl -outfile $cuda90patchLoc
+Invoke-RestMethod $cuda90PatchUrl -outfile $cuda90patchLoc
 start-process -FilePath $cuda90patchLoc -ArgumentList '/S' -wait
 #Start-Process -FilePath $cuda90patchLoc -ArgumentList "-s compiler_8.0" -Wait -NoNewWindow
 # Add to PATH
 
-
-
 #Install cuDNN v6.0
 # aDD TO PATH
-
-
-
-
 
 # Delete all items
 Get-ChildItem -Path $tempDirectory -Include * | remove-Item -recurse
@@ -177,7 +167,7 @@ Get-ChildItem -Path $tempDirectory -Include * | remove-Item -recurse
 If (-NOT($curentPathExt -like "*.PY*")) { $tempPathExt += ";.PY" } 
 If (-NOT($curentPathExt -like "*.PYW*")) { $tempPathExt += ";.PYW" } 
 [System.Environment]::SetEnvironmentVariable('pathext', $tempPathExt, [System.EnvironmentVariableTarget]::Machine)
-refreshenv
+#refreshenv
 
 
 [string]$tempPath = $env:PATH
@@ -213,10 +203,6 @@ If (
 # Install Pycharm community Edition Python IDE
 choco install pycharm-community -y
 
-
-
-
-
 # Install Non-GPU version of Tensorflow
 python -m pip install --upgrade tensorflow
 
@@ -230,16 +216,4 @@ Set-TimeZone -Name "Eastern Standard Time"
 
 
 #Start-Process -FilePath $cuda90ToolkitLoc -ArgumentList "-s compiler_8.0" -Wait -NoNewWindow
-
-
-
-
-
-
-
-
-
-
-
-
 
