@@ -1,4 +1,4 @@
-
+# Comment out the parts you don't need to reduce isntallation time and disk usage
 
 # Set timezone of the server
 Set-TimeZone -Name "Eastern Standard Time"
