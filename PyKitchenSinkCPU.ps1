@@ -139,7 +139,7 @@ choco install pycharm-community -y
 choco install firefox -y
 
 #c:\python36\python.exe -m pip install --upgrade pip setuptools
-# upgrade setup tools to facilitate Microsoft Compiler
+# upgrade setup tools 
 python -m pip install --upgrade setuptools
 
 # upgrade Pip installer
@@ -285,6 +285,15 @@ python pip -m install pyodbc
 
 # The non-GPU version of TensorFlow
 pip3 install --upgrade tensorflow
+
+# Install Keras
+python -m pip install keras
+
+# Install PyTourch
+python -m pip install torch
+
+# Install Cognitive Toolkit (formerly CNTK) non-GPU version
+python -m pip install cntk
 
 Restart-Computer -Force
 
