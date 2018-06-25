@@ -1,5 +1,154 @@
 # Comment out the parts you don't need to reduce isntallation time and disk usage
 
+Function Get-EnvExtensionList {
+  <#
+  .SYNOPSIS
+  returns the env path extensions as an array list
+  .DESCRIPTION
+  returns the env path extensions as an array list
+  #>
+    [cmdletbinding()]
+    $pathExtArray =  ($env:PATHEXT).Split("{;}")
+    $pathExtList = New-Object System.Collections.ArrayList
+    $pathExtList.AddRange($pathExtArray)
+    return ,$pathExtList
+}
+
+
+Function Add-EnvExtension {
+  <#
+  .SYNOPSIS
+  Append a path extension to Machine, process and user paths
+  .DESCRIPTION
+  Checks if the $env:PATHEXT has the path entered. If it doesn't then the method adds and updates it to machine, process and user
+  #>
+#[cmdletbinding()]
+Param (
+[string]$pathExtToAdd
+   ) 
+    $pathList = Get-EnvExtensionList
+    $alreadyPresentCount = ($pathList | Where{$_ -like $pathToAdd}).Count
+    #$message = ''
+    if ($alreadyPresentCount -eq 0)
+    {
+        $pathList.Add($pathExtToAdd)
+        $returnPath = $pathList -join ";"
+        [System.Environment]::SetEnvironmentVariable('pathext', $returnPath, [System.EnvironmentVariableTarget]::Machine)
+        [System.Environment]::SetEnvironmentVariable('pathext', $returnPath, [System.EnvironmentVariableTarget]::Process)
+        [System.Environment]::SetEnvironmentVariable('pathext', $returnPath, [System.EnvironmentVariableTarget]::User)
+        $message = "Path extension added to machine, process and user paths to include $pathExtToAdd"
+    }
+    else
+    {
+        $message = 'Path extension already exists'
+    }
+    Write-Information $message
+}
+
+
+Function Remove-EnvExtension {
+  <#
+  .SYNOPSIS
+  Remove a path extension from machine, process and user paths
+  .DESCRIPTION
+  Checks if the $env:PATHEXT has the path entered. If it does, then it removes it from machine, process and user
+  #>
+    #[cmdletbinding()]
+    Param (
+    [string]$PathExtToRemove
+       ) 
+    # End of Parameters
+    $preRemovalExtArray = Get-EnvExtensionList
+    $pathList = New-Object System.Collections.ArrayList
+    $pathList = $preRemovalExtArray | Where{!($_ -like $PathExtToRemove)}
+    [int] $dif = $preRemovalExtArray.Count - $pathList.Count
+    If($dif -gt 0)
+    {
+    $returnPath = $pathList -join ";"
+    [System.Environment]::SetEnvironmentVariable('pathext', $returnPath, [System.EnvironmentVariableTarget]::Machine)
+    [System.Environment]::SetEnvironmentVariable('pathext', $returnPath, [System.EnvironmentVariableTarget]::Process)
+    [System.Environment]::SetEnvironmentVariable('pathext', $returnPath, [System.EnvironmentVariableTarget]::User)
+    }
+    $message = "Removed " + $dif.ToString() + " paths fom the machine, process, and user environments."
+    Write-InformatioN $message
+}
+
+
+Function Get-EnvPathList {
+  <#
+  .SYNOPSIS
+  returns the env paths as an array list
+  .DESCRIPTION
+  returns the env paths as an array list
+  #>
+    [cmdletbinding()]
+    $pathArray =  ($env:PATH).Split("{;}")
+    $pathList = New-Object System.Collections.ArrayList
+    $pathList.AddRange($pathArray)
+    return ,$pathList
+}
+
+
+Function Add-EnvPath {
+  <#
+  .SYNOPSIS
+  Append a path to Machine, process and user paths
+  .DESCRIPTION
+  Checks if the $env:Path has the path entered. If it doesn't then the method adds and updates it to machine, process and user
+  #>
+#[cmdletbinding()]
+Param (
+[string]$pathToAdd
+   ) 
+    $pathList = Get-EnvPathList
+    $alreadyPresentCount = ($pathList | Where{$_ -like $pathToAdd}).Count
+    #$message = ''
+    if ($alreadyPresentCount -eq 0)
+    {
+        $pathList.Add($pathToAdd)
+        $returnPath = $pathList -join ";"
+        [System.Environment]::SetEnvironmentVariable('path', $returnPath, [System.EnvironmentVariableTarget]::Machine)
+        [System.Environment]::SetEnvironmentVariable('path', $returnPath, [System.EnvironmentVariableTarget]::Process)
+        [System.Environment]::SetEnvironmentVariable('path', $returnPath, [System.EnvironmentVariableTarget]::User)
+        $message = "Path added to machine, process and user paths to include $pathToAdd"
+    }
+    else
+    {
+        $message = 'Path already exists'
+    }
+    Write-Information $message
+}
+
+
+Function Remove-EnvPath {
+  <#
+  .SYNOPSIS
+  Remove a path from machine, process and user paths
+  .DESCRIPTION
+  Checks if the $env:Path has the path entered. If it does, then it removes it from machine, process and user
+  #>
+    #[cmdletbinding()]
+    Param (
+    [string]$PathToRemove
+       ) 
+    # End of Parameters
+    $preRemovalPathArray = Get-EnvPathList
+    $pathList = New-Object System.Collections.ArrayList
+    $pathList = $preRemovalPathArray | Where{!($_ -like $PathToRemove)}
+    [int] $dif = $preRemovalPathArray.Count - $pathList.Count
+    If($dif -gt 0)
+    {
+    $returnPath = $pathList -join ";"
+    [System.Environment]::SetEnvironmentVariable('path', $returnPath, [System.EnvironmentVariableTarget]::Machine)
+    [System.Environment]::SetEnvironmentVariable('path', $returnPath, [System.EnvironmentVariableTarget]::Process)
+    [System.Environment]::SetEnvironmentVariable('path', $returnPath, [System.EnvironmentVariableTarget]::User)
+    }
+    $message = "Removed " + $dif.ToString() + " paths fom the machine, process, and user environments."
+    Write-InformatioN $message
+}
+
+
+
 # Set timezone of the server
 Set-TimeZone -Name "Eastern Standard Time"
 
@@ -56,52 +205,15 @@ choco install hxd -y
 # Todo need to check what version of Python 3 is installed
 choco install python3 -y
 
-
-
-# check to see if path extensions .py and .pyw exist then update
-[string]$tempPathExt = $env:PATHEXT
-[string]$currentPathExt = $env:PATHEXT
-If (-NOT($curentPathExt -like "*.PY*")) { $tempPathExt += ";.PY" } 
-If (-NOT($curentPathExt -like "*.PYW*")) { $tempPathExt += ";.PYW" } 
-[System.Environment]::SetEnvironmentVariable('pathext', $tempPathExt, [System.EnvironmentVariableTarget]::Process)
-[System.Environment]::SetEnvironmentVariable('pathext', $tempPathExt, [System.EnvironmentVariableTarget]::Machine)
-[System.Environment]::SetEnvironmentVariable('pathext', $tempPathExt, [System.EnvironmentVariableTarget]::User)
-#refreshenv
-
-
-
-
 # Update the path variables to facilitate using Pip and Pip3 to install Python packages
-[string]$tempPath = $env:PATH
-[string]$currentPath = $env:PATH
-If (
-    (-NOT($curentPath -like "C:\Program Files\Python36\;*")) -and
-    (-NOT($curentPath -like "*C:\Program Files\Python36\;*")) -and 
-    (-NOT($curentPath -like "*C:\Program Files\Python36\"))
-    ) { $tempPath += ";C:\Program Files\Python36\" } 
-If (
-    (-NOT($curentPath -like "C:\Program Files\Python36\Scripts\;*")) -and
-    (-NOT($curentPath -like "*C:\Program Files\Python36\Scripts\;*")) -and 
-    (-NOT($curentPath -like "*C:\Program Files\Python36\Scripts\"))
-    ) { $tempPath += ";C:\Program Files\Python36" } 
-If (
-    (-NOT($curentPath -like "C:\Python36\Scripts\;*")) -and
-    (-NOT($curentPath -like "*C:\Python36\Scripts\;*")) -and 
-    (-NOT($curentPath -like "*C:\Python36\Scripts\"))
-    ) { $tempPath += ";C:\Python36\Scripts\" }   
-If (
-    (-NOT($curentPath -like "C:\Python36\;*")) -and
-    (-NOT($curentPath -like "*C:\Python36\;*")) -and 
-    (-NOT($curentPath -like "*C:\Python36\"))
-    ) { $tempPath += ";C:\Python36\" }   
-[System.Environment]::SetEnvironmentVariable('path', $tempPath, [System.EnvironmentVariableTarget]::Machine)
-[System.Environment]::SetEnvironmentVariable('path', $tempPath, [System.EnvironmentVariableTarget]::Process)
-[System.Environment]::SetEnvironmentVariable('path', $tempPath, [System.EnvironmentVariableTarget]::User)
+Add-EnvExtension '.PY'
+Add-EnvExtension '.PYW'
+Add-EnvPath 'C:\Program Files\Python36\'
+Add-EnvPath 'C:\Program Files\Python36'
+Add-EnvPath 'C:\Program Files\Python36\Scripts'
+Add-EnvPath 'C:\Python36\Scripts\'
+Add-EnvPath 'C:\Python36\'
 # add also C:\Users\<computer>\AppData\Roaming\Python\Python36\Scripts
-
-
-
-#'C:\Python36\Scripts' which is not on PATH
 
 
 # Install C++ compiler. This package installer sometimes has intermitent errors
@@ -130,8 +242,6 @@ For ($i=0; $i -le 10; $i++) {
 # msiexec /i C:\temp_provision\Cpp.msi ALLUSERS=1 /q
 
 
-
-
 # Install Pycharm IDE for Python
 choco install pycharm-community -y
 
@@ -157,7 +267,6 @@ pip install https://github.com/explosion/spacy-models/releases/download/en_core_
 #python -m spacy.en.download all
 #python -m spacy download xx
 #python -m spacy download en_core_web_lg
-
 
 # Install Gensim
 python -m pip install --upgrade gensim
@@ -255,7 +364,8 @@ python -m pip install django
 # Todo add install for Stanford CoreNLP python wrapper
 
 #Install Azure PowerShell Tools
-choco install azurepowershell -y
+Install-Module -Name Azure -Force
+Install-Module -Name AzureRM -Force
 
 # Install Azure CLI
 choco install azure-cli -y
@@ -268,9 +378,17 @@ python -m pip install azure-mgmt-scheduler # Install the latest Storage manageme
 python -m pip install azure-mgmt-compute # will install only the latest Compute Management library
 python -m pip install azure-cosmosdb-table  # pip install stuff for storage tables and cosmos bs
 
-
-# Install Google cloud PowerShell Library
+# Install Google Cloud PowerShell Library
 Install-Module -Name GoogleCloud -Force
+
+# Install Google Cloud Python Client Libraries
+python -m pip install --upgrade google-cloud
+
+# Install AWS PowerShell Library
+Install-Module -Name AWSPowerShell -Force
+
+#Install Python AWS Client Library
+python -m pip install boto3
 
 #install the PYODBC driver for SQL Server
 # See full Install Instructions in https://docs.microsoft.com/en-us/sql/connect/python/pyodbc/step-1-configure-development-environment-for-pyodbc-python-development
