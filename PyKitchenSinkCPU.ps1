@@ -214,6 +214,7 @@ Add-EnvPath 'C:\Program Files\Python36'
 Add-EnvPath 'C:\Program Files\Python36\Scripts'
 Add-EnvPath 'C:\Python36\Scripts\'
 Add-EnvPath 'C:\Python36\'
+Add-EnvPath 'C:\Python36\Scripts'
 # add also C:\Users\<computer>\AppData\Roaming\Python\Python36\Scripts
 
 
@@ -241,7 +242,6 @@ For ($i=0; $i -le 10; $i++) {
 # Invoke-RestMethod $visualCppUrl -outfile $visualCppLoc
 # Start-Process -FilePath $visualCppLoc -Wait -ArgumentList "/q" -Verb runas
 # msiexec /i C:\temp_provision\Cpp.msi ALLUSERS=1 /q
-
 
 # Install Pycharm IDE for Python
 choco install pycharm-community -y
