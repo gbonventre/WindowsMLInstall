@@ -193,6 +193,7 @@ choco install 7zip -y
 
 #git
 choco install git -y
+Add-EnvPath 'C:\Program Files\Git\cmd'
 
 # Install a HexEditor hXD
 choco install hxd -y
