@@ -202,19 +202,20 @@ choco install hxd -y
 # Needs more work
 
 
-# Install Python 3.6, Assumes that Python 3.6 is the latest version
+# Install Python 3.7, Assumes that Python 3.7 is the latest version
 # Todo need to check what version of Python 3 is installed
-choco install python3 -y
+# Python for windows changed the default install path. This forces it back to the old path for package compatibility
+ choco install python3 --params "/InstallDir:C:\Python37" -y
 
 # Update the path variables to facilitate using Pip and Pip3 to install Python packages
 Add-EnvExtension '.PY'
 Add-EnvExtension '.PYW'
-Add-EnvPath 'C:\Program Files\Python36\'
-Add-EnvPath 'C:\Program Files\Python36'
-Add-EnvPath 'C:\Program Files\Python36\Scripts'
-Add-EnvPath 'C:\Python36\Scripts\'
-Add-EnvPath 'C:\Python36\'
-Add-EnvPath 'C:\Python36\Scripts'
+Add-EnvPath 'C:\Program Files\Python37\'
+Add-EnvPath 'C:\Program Files\Python37'
+Add-EnvPath 'C:\Program Files\Python37\Scripts'
+Add-EnvPath 'C:\Python37\Scripts\'
+Add-EnvPath 'C:\Python37\'
+Add-EnvPath 'C:\Python37\Scripts'
 # add also C:\Users\<computer>\AppData\Roaming\Python\Python36\Scripts
 
 
@@ -396,7 +397,7 @@ python -m pip install boto3
 # download and install this - I think that this can be replaced with the chocolatey package
 #https://www.microsoft.com/en-us/download/confirmation.aspx?id=56567
 # Todo Make sure that python version is 3.6
-cd C:\Python36\Scripts 
+cd C:\Python37\Scripts 
 python pip -m install pyodbc
 # pay attention to which version of the ODBC driver is used becuase each database connection references it
 
