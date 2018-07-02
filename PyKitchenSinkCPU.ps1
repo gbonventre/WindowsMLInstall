@@ -313,7 +313,16 @@ python -m pip install -U textblob
 python -m textblob.download_corpora
 
 #Install MatPlotLib
-python -m pip install matplotlib
+#$matPlotLibDirectory = "C:\matPlotLib"
+#New-Item -ItemType directory -Path $matPlotLibDirectory -Force | Out-Null
+#cd C:\matPlotLib
+#git clone https://github.com/matplotlib/matplotlib
+#git clone https://github.com/jbmohler/matplotlib-winbuild
+#cd C:\matPlotLib\matplotlib-winbuild
+#python matplotlib-winbuild\buildall.py
+#cd C:\Windows\System32
+## missing dependencies
+##python -m pip install matplotlib
 
 # Install statsmodels
 python -m pip install -U statsmodels
