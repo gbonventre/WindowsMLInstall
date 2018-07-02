@@ -388,24 +388,23 @@ Install-Module -Name AzureRM -Force
 choco install azure-cli -y
 
 # Install Azure related Python libraries
-python -m pip install azure                # pip install Azure
-python -m pip install azure-storage
-python -m pip install azure-batch          # Install the latest Batch runtime library
-python -m pip install azure-mgmt-scheduler # Install the latest Storage management library
-python -m pip install azure-mgmt-compute # will install only the latest Compute Management library
-python -m pip install azure-cosmosdb-table  # pip install stuff for storage tables and cosmos bs
+#python -m pip install azure                
+#python -m pip install azure-batch          # Install the latest Batch runtime library
+#python -m pip install azure-mgmt-scheduler # Install the latest Storage management library
+#python -m pip install azure-mgmt-compute # will install only the latest Compute Management library
+#python -m pip install azure-cosmosdb-table  # pip install stuff for storage tables and cosmos bs
 
 # Install Google Cloud PowerShell Library
-Install-Module -Name GoogleCloud -Force
+#Install-Module -Name GoogleCloud -Force
 
 # Install Google Cloud Python Client Libraries
-python -m pip install --upgrade google-cloud
+#python -m pip install --upgrade google-cloud
 
 # Install AWS PowerShell Library
-Install-Module -Name AWSPowerShell -Force
+#Install-Module -Name AWSPowerShell -Force
 
 #Install Python AWS Client Library
-python -m pip install boto3
+#python -m pip install boto3
 
 #install the PYODBC driver for SQL Server
 # See full Install Instructions in https://docs.microsoft.com/en-us/sql/connect/python/pyodbc/step-1-configure-development-environment-for-pyodbc-python-development
