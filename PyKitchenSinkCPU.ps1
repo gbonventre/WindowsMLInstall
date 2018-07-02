@@ -258,6 +258,9 @@ python -m pip install --upgrade setuptools
 python -m pip install --upgrade pip
 python -m pip install --upgrade pip setuptools
 
+# Cmake 
+python -m pip install cmake
+
 #Install Cython
 python -m pip install Cython
 
