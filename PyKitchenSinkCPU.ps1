@@ -201,6 +201,9 @@ choco install hxd -y
 # Install freewhere Hexeditor XVI32
 # Needs more work
 
+# Installs a LaTex Editor
+choco install miktex -y
+
 
 # Install Python 3.7, Assumes that Python 3.7 is the latest version
 # Todo need to check what version of Python 3 is installed
