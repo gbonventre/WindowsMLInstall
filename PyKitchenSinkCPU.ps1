@@ -360,6 +360,7 @@ python -m pip install -U textblob
 python -m textblob.download_corpora
 
 #Install MatPlotLib
+Add-EnvVarIfNotPresent "VS100COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\"
 #$matPlotLibDirectory = "C:\matPlotLib"
 #New-Item -ItemType directory -Path $matPlotLibDirectory -Force | Out-Null
 #cd C:\matPlotLib
