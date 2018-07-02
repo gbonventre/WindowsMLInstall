@@ -248,10 +248,6 @@ choco install hxd -y
 # Install freewhere Hexeditor XVI32
 # Needs more work
 
-# Installs a LaTex Editor
-choco install miktex -y
-
-
 # Install Python 3.7, Assumes that Python 3.7 is the latest version
 # Todo need to check what version of Python 3 is installed
 # Python for windows changed the default install path. This forces it back to the old path for package compatibility
@@ -358,6 +354,17 @@ cd C:\Windows\System32
 #Install TextBlob
 python -m pip install -U textblob
 python -m textblob.download_corpora
+
+
+#Prereqs for MatPlotLib
+choco install ffmpeg -y
+choco install ghostscript -y
+choco install miktex -y
+python -m pip install pytz
+python -m pip install -U pyparsing
+python -m pip install kiwisolver
+python -m pip install Cycler
+
 
 #Install MatPlotLib
 Add-EnvVarIfNotPresent "VS100COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\"
