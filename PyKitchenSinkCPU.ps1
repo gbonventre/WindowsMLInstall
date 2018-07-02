@@ -1,5 +1,52 @@
 # Comment out the parts you don't need to reduce isntallation time and disk usage
 
+
+Function Get-EnvVariableNameList {
+  <#
+  .SYNOPSIS
+  returns the names of all the envirnomental variables as an array list
+  .DESCRIPTION
+  returns the names of all the envirnomental variables as an array list
+  #>
+    [cmdletbinding()]
+    $allEnvVars = Get-ChildItem Env:
+    $allEnvNamesArray = $allEnvVars.Name
+    $pathEnvNamesList = New-Object System.Collections.ArrayList
+    $pathEnvNamesList.AddRange($allEnvNamesArray)
+    return ,$pathEnvNamesList
+}
+
+
+Function Add-EnvVarIfNotPresent {
+  <#
+  .SYNOPSIS
+  Append an environmental variable to Machine, process and user if that variable name isn't already present
+  .DESCRIPTION
+  Checks if the environmental variable name is present. If it doesn't then the method adds and updates it to machine, process and user
+  #>
+#[cmdletbinding()]
+Param (
+[string]$variableNameToAdd,
+[string]$variableValueToAdd
+   ) 
+    $nameList = Get-EnvVariableNameList
+    $alreadyPresentCount = ($nameList | Where{$_ -like $variableNameToAdd}).Count
+    #$message = ''
+    if ($alreadyPresentCount -eq 0)
+    {
+    [System.Environment]::SetEnvironmentVariable($variableNameToAdd, $variableValueToAdd, [System.EnvironmentVariableTarget]::Machine)
+    [System.Environment]::SetEnvironmentVariable($variableNameToAdd, $variableValueToAdd, [System.EnvironmentVariableTarget]::Process)
+    [System.Environment]::SetEnvironmentVariable($variableNameToAdd, $variableValueToAdd, [System.EnvironmentVariableTarget]::User)
+        $message = "Enviromental variable added to machine, process and user to include $variableNameToAdd"
+    }
+    else
+    {
+        $message = 'Environmental variable already exists. Consider using a different function to modify it'
+    }
+    Write-Information $message
+}
+
+
 Function Get-EnvExtensionList {
   <#
   .SYNOPSIS
