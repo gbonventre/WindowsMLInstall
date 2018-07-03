@@ -364,6 +364,13 @@ python -m pip install pytz
 python -m pip install -U pyparsing
 python -m pip install kiwisolver
 python -m pip install Cycler
+# Download Freetype From Github to System32 folder
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$freetypeWebclient = New-Object System.Net.WebClient
+$freetypeUrl = "https://github.com/ubawurinna/freetype-windows-binaries/raw/master/win64/freetype.dll"
+$freetypeDestination = "C:\Windows\System32\freetype.dll"
+$freetypeWebclient.DownloadFile($freetypeUrl,$freetypeDestination)
+
 
 
 #Install MatPlotLib
