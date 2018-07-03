@@ -392,7 +392,7 @@ $matUrl = "https://github.com/gbonventre/WindowsMLInstall/raw/master/matplotlib-
 $matDestination = "C:\temp\matplotlib-2.2.2-cp37-cp37m-win_amd64.whl"
 $matWebClient.DownloadFile($matUrl, $matDestination)
 cd $tempDirectory 
-
+python -m pip install --user matplotlib-2.2.2-cp37-cp37m-win_amd64.whl
 
 # Install statsmodels
 python -m pip install -U statsmodels
