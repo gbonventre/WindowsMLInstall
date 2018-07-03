@@ -235,6 +235,16 @@ choco install visualstudio2017buildtools -y
 choco install visualcppbuildtools -y
 choco install visualstudio2017community -y #Just to get the C++ compiler
 
+# Add Path For Visual Studio 2017, Visual Studio Installer and redirect any hard coded references to newest visual studio
+Add-EnvVarIfNotPresent "VS140COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\"
+Add-EnvVarIfNotPresent "VSSDK140Install" "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VSSDK\"
+Add-EnvVarIfNotPresent "VS130COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\"
+Add-EnvVarIfNotPresent "VS120COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\"
+Add-EnvVarIfNotPresent "VS110COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\"
+Add-EnvVarIfNotPresent "VS100COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\"
+Add-EnvVarIfNotPresent "VS90COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\"
+
+
 # Install 7zip compression software
 choco install 7zip -y
 
