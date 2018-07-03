@@ -371,8 +371,6 @@ $freetypeUrl = "https://github.com/ubawurinna/freetype-windows-binaries/raw/mast
 $freetypeDestination = "C:\Windows\System32\freetype.dll"
 $freetypeWebclient.DownloadFile($freetypeUrl,$freetypeDestination)
 
-
-
 #Install MatPlotLib
 Add-EnvVarIfNotPresent "VS100COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\"
 Add-EnvVarIfNotPresent "VS90COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\"
@@ -386,6 +384,15 @@ Add-EnvVarIfNotPresent "VS90COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual 
 #cd C:\Windows\System32
 ## missing dependencies
 ##python -m pip install matplotlib
+$tempDirectory = "C:\temp"
+New-Item -ItemType directory -Path $tempDirectory -Force | Out-Null
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$matWebClient = New-Object System.Net.WebClient
+$matUrl = "https://github.com/gbonventre/WindowsMLInstall/raw/master/matplotlib-2.2.2-cp37-cp37m-win_amd64.whl"
+$matDestination = "C:\temp\matplotlib-2.2.2-cp37-cp37m-win_amd64.whl"
+$matWebClient.DownloadFile($matUrl, $matDestination)
+cd $tempDirectory 
+
 
 # Install statsmodels
 python -m pip install -U statsmodels
