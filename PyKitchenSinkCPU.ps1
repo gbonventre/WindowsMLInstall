@@ -307,6 +307,9 @@ python -m pip install --upgrade pip setuptools
 # Cmake 
 python -m pip install cmake
 
+# pkgconfig
+python -m pip install pkgconfig
+
 #Install Cython
 python -m pip install Cython
 
