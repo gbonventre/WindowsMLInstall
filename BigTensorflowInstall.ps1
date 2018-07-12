@@ -7,6 +7,7 @@
 # PATH LINK USEFUL: https://kevinmarquette.github.io/2016-10-21-powershell-installing-msi-files/
 # https://social.technet.microsoft.com/Forums/ie/en-US/6badd078-f4b4-4506-aa38-121e7c6740cd/automatic-installation-via-powershell?forum=winserverpowershell
 # http://developer.download.nvidia.com/compute/cuda/9.0/Prod/docs/sidebar/CUDA_Installation_Guide_Windows.pdf
+# Accelerate library https://www.scivision.co/install-cuda-accelerate-for-anaconda-python/
 
 #Install Nuget Package provider
 Install-PackageProvider -Name NuGet -Force
