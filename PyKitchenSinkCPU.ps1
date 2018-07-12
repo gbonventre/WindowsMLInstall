@@ -455,6 +455,8 @@ python -m pip install virtualenvwrapper-win
 
 python -m pip install django
 
+# parallel analytics
+python -m pip install dask[complete]
 
 # X-13ARIMA-SEATS , Todo: Add to installer for this timeseries library
 
