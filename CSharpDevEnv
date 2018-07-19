@@ -225,7 +225,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 choco install googlechrome -y
 
 #Install Firefox
-hoco install firefox -y
+choco install firefox -y
 
 #Install Adobe Acrobat Reader
 choco install adobereader -y
