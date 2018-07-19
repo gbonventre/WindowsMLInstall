@@ -1,0 +1,332 @@
+#sets up a .Net Dev environment on a server
+
+
+Set-TimeZone -Name "Eastern Standard Time"
+
+
+Function Get-EnvVariableNameList {
+  <#
+  .SYNOPSIS
+  returns the names of all the envirnomental variables as an array list
+  .DESCRIPTION
+  returns the names of all the envirnomental variables as an array list
+  #>
+    [cmdletbinding()]
+    $allEnvVars = Get-ChildItem Env:
+    $allEnvNamesArray = $allEnvVars.Name
+    $pathEnvNamesList = New-Object System.Collections.ArrayList
+    $pathEnvNamesList.AddRange($allEnvNamesArray)
+    return ,$pathEnvNamesList
+}
+
+
+Function Add-EnvVarIfNotPresent {
+  <#
+  .SYNOPSIS
+  Append an environmental variable to Machine, process and user if that variable name isn't already present
+  .DESCRIPTION
+  Checks if the environmental variable name is present. If it doesn't then the method adds and updates it to machine, process and user
+  #>
+#[cmdletbinding()]
+Param (
+[string]$variableNameToAdd,
+[string]$variableValueToAdd
+   ) 
+    $nameList = Get-EnvVariableNameList
+    $alreadyPresentCount = ($nameList | Where{$_ -like $variableNameToAdd}).Count
+    #$message = ''
+    if ($alreadyPresentCount -eq 0)
+    {
+    [System.Environment]::SetEnvironmentVariable($variableNameToAdd, $variableValueToAdd, [System.EnvironmentVariableTarget]::Machine)
+    [System.Environment]::SetEnvironmentVariable($variableNameToAdd, $variableValueToAdd, [System.EnvironmentVariableTarget]::Process)
+    [System.Environment]::SetEnvironmentVariable($variableNameToAdd, $variableValueToAdd, [System.EnvironmentVariableTarget]::User)
+        $message = "Enviromental variable added to machine, process and user to include $variableNameToAdd"
+    }
+    else
+    {
+        $message = 'Environmental variable already exists. Consider using a different function to modify it'
+    }
+    Write-Information $message
+}
+
+
+Function Get-EnvExtensionList {
+  <#
+  .SYNOPSIS
+  returns the env path extensions as an array list
+  .DESCRIPTION
+  returns the env path extensions as an array list
+  #>
+    [cmdletbinding()]
+    $pathExtArray =  ($env:PATHEXT).Split("{;}")
+    $pathExtList = New-Object System.Collections.ArrayList
+    $pathExtList.AddRange($pathExtArray)
+    return ,$pathExtList
+}
+
+
+Function Add-EnvExtension {
+  <#
+  .SYNOPSIS
+  Append a path extension to Machine, process and user paths
+  .DESCRIPTION
+  Checks if the $env:PATHEXT has the path entered. If it doesn't then the method adds and updates it to machine, process and user
+  #>
+#[cmdletbinding()]
+Param (
+[string]$pathExtToAdd
+   ) 
+    $pathList = Get-EnvExtensionList
+    $alreadyPresentCount = ($pathList | Where{$_ -like $pathToAdd}).Count
+    #$message = ''
+    if ($alreadyPresentCount -eq 0)
+    {
+        $pathList.Add($pathExtToAdd)
+        $returnPath = $pathList -join ";"
+        [System.Environment]::SetEnvironmentVariable('pathext', $returnPath, [System.EnvironmentVariableTarget]::Machine)
+        [System.Environment]::SetEnvironmentVariable('pathext', $returnPath, [System.EnvironmentVariableTarget]::Process)
+        [System.Environment]::SetEnvironmentVariable('pathext', $returnPath, [System.EnvironmentVariableTarget]::User)
+        $message = "Path extension added to machine, process and user paths to include $pathExtToAdd"
+    }
+    else
+    {
+        $message = 'Path extension already exists'
+    }
+    Write-Information $message
+}
+
+
+Function Remove-EnvExtension {
+  <#
+  .SYNOPSIS
+  Remove a path extension from machine, process and user paths
+  .DESCRIPTION
+  Checks if the $env:PATHEXT has the path entered. If it does, then it removes it from machine, process and user
+  #>
+    #[cmdletbinding()]
+    Param (
+    [string]$PathExtToRemove
+       ) 
+    # End of Parameters
+    $preRemovalExtArray = Get-EnvExtensionList
+    $pathList = New-Object System.Collections.ArrayList
+    $pathList = $preRemovalExtArray | Where{!($_ -like $PathExtToRemove)}
+    [int] $dif = $preRemovalExtArray.Count - $pathList.Count
+    If($dif -gt 0)
+    {
+    $returnPath = $pathList -join ";"
+    [System.Environment]::SetEnvironmentVariable('pathext', $returnPath, [System.EnvironmentVariableTarget]::Machine)
+    [System.Environment]::SetEnvironmentVariable('pathext', $returnPath, [System.EnvironmentVariableTarget]::Process)
+    [System.Environment]::SetEnvironmentVariable('pathext', $returnPath, [System.EnvironmentVariableTarget]::User)
+    }
+    $message = "Removed " + $dif.ToString() + " paths fom the machine, process, and user environments."
+    Write-InformatioN $message
+}
+
+
+Function Get-EnvPathList {
+  <#
+  .SYNOPSIS
+  returns the env paths as an array list
+  .DESCRIPTION
+  returns the env paths as an array list
+  #>
+    [cmdletbinding()]
+    $pathArray =  ($env:PATH).Split("{;}")
+    $pathList = New-Object System.Collections.ArrayList
+    $pathList.AddRange($pathArray)
+    return ,$pathList
+}
+
+
+Function Add-EnvPath {
+  <#
+  .SYNOPSIS
+  Append a path to Machine, process and user paths
+  .DESCRIPTION
+  Checks if the $env:Path has the path entered. If it doesn't then the method adds and updates it to machine, process and user
+  #>
+#[cmdletbinding()]
+Param (
+[string]$pathToAdd
+   ) 
+    $pathList = Get-EnvPathList
+    $alreadyPresentCount = ($pathList | Where{$_ -like $pathToAdd}).Count
+    #$message = ''
+    if ($alreadyPresentCount -eq 0)
+    {
+        $pathList.Add($pathToAdd)
+        $returnPath = $pathList -join ";"
+        [System.Environment]::SetEnvironmentVariable('path', $returnPath, [System.EnvironmentVariableTarget]::Machine)
+        [System.Environment]::SetEnvironmentVariable('path', $returnPath, [System.EnvironmentVariableTarget]::Process)
+        [System.Environment]::SetEnvironmentVariable('path', $returnPath, [System.EnvironmentVariableTarget]::User)
+        $message = "Path added to machine, process and user paths to include $pathToAdd"
+    }
+    else
+    {
+        $message = 'Path already exists'
+    }
+    Write-Information $message
+}
+
+
+Function Remove-EnvPath {
+  <#
+  .SYNOPSIS
+  Remove a path from machine, process and user paths
+  .DESCRIPTION
+  Checks if the $env:Path has the path entered. If it does, then it removes it from machine, process and user
+  #>
+    #[cmdletbinding()]
+    Param (
+    [string]$PathToRemove
+       ) 
+    # End of Parameters
+    $preRemovalPathArray = Get-EnvPathList
+    $pathList = New-Object System.Collections.ArrayList
+    $pathList = $preRemovalPathArray | Where{!($_ -like $PathToRemove)}
+    [int] $dif = $preRemovalPathArray.Count - $pathList.Count
+    If($dif -gt 0)
+    {
+    $returnPath = $pathList -join ";"
+    [System.Environment]::SetEnvironmentVariable('path', $returnPath, [System.EnvironmentVariableTarget]::Machine)
+    [System.Environment]::SetEnvironmentVariable('path', $returnPath, [System.EnvironmentVariableTarget]::Process)
+    [System.Environment]::SetEnvironmentVariable('path', $returnPath, [System.EnvironmentVariableTarget]::User)
+    }
+    $message = "Removed " + $dif.ToString() + " paths fom the machine, process, and user environments."
+    Write-InformatioN $message
+}
+
+
+# Ensure PS remoting is enabled, although this is enabled by default for Azure VMs
+Enable-PSRemoting -Force
+
+# Create rule in Windows Firewall
+New-NetFirewallRule -Name "WinRM HTTPS" -DisplayName "WinRM HTTPS" -Enabled True -Profile Any -Action Allow -Direction Inbound -LocalPort 5986 -Protocol TCP
+
+# Create Self Signed certificate and store thumbprint
+$thumbprint = (New-SelfSignedCertificate -DnsName $env:COMPUTERNAME -CertStoreLocation Cert:\LocalMachine\My).Thumbprint
+
+# Run WinRM configuration on command line. DNS name set to computer hostname, you may wish to use a FQDN
+$cmd = "winrm create winrm/config/Listener?Address=*+Transport=HTTPS @{Hostname=""$env:computername""; CertificateThumbprint=""$thumbprint""}"
+cmd.exe /C $cmd
+
+#Install Nuget Package provider
+Install-PackageProvider -Name NuGet -Force
+
+# Install Powershell Get to facilitate installing packages from PowerShellGallery.com
+Install-Module -Name PowerShellGet -Force 
+
+# Facilitates using the Windows package installer Chocolatey
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+#choco install chocolatey-core.extension
+
+#Installs the Google Chrome Browser
+choco install googlechrome -y
+
+#Install Firefox
+hoco install firefox -y
+
+#Install Adobe Acrobat Reader
+choco install adobereader -y
+
+#Install Adobe Flash Plugin
+choco install flashplayerplugin -y
+
+#Install Git
+choco install git -y
+Add-EnvPath 'C:\Program Files\Git\cmd'
+
+#Install 7zip
+choco install 7zip.install -y
+
+#Install Visual Studio 2017 Enterprise With Add ins
+#choco install visualstudio2017enterprise -y
+#choco install vcredist2017 -y
+#choco install microsoft-build-tools -y
+
+# Install Visual Studio 2017 Community Edition
+choco install visualstudio2017community -y
+choco install vcredist2017 -y
+choco install microsoft-build-tools -y
+choco install visualstudio2017-workload-netweb -y
+choco install visualstudio2017-workload-netcoretools -y
+choco install visualstudio2017-workload-azure -y
+choco install netfx-4.6.1-devpack -y
+choco install netfx-4.6.2-devpack -y
+choco install visualstudio2017-workload-node -y
+choco install visualstudio2017-workload-data -y
+choco install ssdt17 -y
+choco install visualstudio2017testcontroller -y
+choco install typescript-vs2017 -y
+Add-EnvVarIfNotPresent "VS140COMNTOOLS"
+Add-EnvVarIfNotPresent "VSSDK140Install"
+
+# Dot Net Core
+choco install dotnetcore -y
+choco install dotnetcore-runtime.install -y
+
+# Adds NodeJS and Javascript tools
+choco install nodejs -y
+choco install yarn -y
+
+# Install Typescript
+choco install typescript -y
+
+#Install PowerShell Unit Testing Framework
+choco install pester -y
+
+#Install the lightweight IDE with relevant add ins
+choco install vscode -y
+choco install vscode-powershell -y
+choco install vscode-docker -y
+choco install vscode-csharp -y
+choco install vscode-csharpextensions -y
+choco install vscode-azurerm-tools -y
+choco install vscode-gitlens -y
+choco install vscode-mssql -y
+choco install vscode-tslint -y
+
+#Installs LinqPad
+choco install linqpad -y
+
+# Install Free Resharper CLI
+choco install resharper-clt.portable -y
+
+# Install SQL Server Managerment Studio
+choco install sql-server-management-studio -y
+
+# Install SQL Operations Studio
+choco install sql-operations-studio -y
+
+# Install Postman API utility
+choco install postman -y
+
+#Install The Tailblazer log utility
+choco install tailblazer -y
+
+#Install PowerBI Visualization 
+choco install powerbi -y
+
+#Install Azure Tools
+Install-Module -Name Azure -Force
+Install-Module -Name AzureRM -Force
+Install-Module -Name AzureAD -Force
+choco install azure-cli -y
+
+# Get And Install AzCopy
+$tempAzDirectory = "C:\temp_az"
+New-Item -ItemType directory -Path $tempAzDirectory -Force | Out-Null
+$azUrl = "https://aka.ms/downloadazcopy"
+$azOutput = "C:\temp_az\azCopy.msi"
+$wc = New-Object System.Net.WebClient
+$wc.DownloadFile($azUrl, $azOutput)
+cd $tempAzDirectory
+# https://kevinmarquette.github.io/2016-10-21-powershell-installing-msi-files/
+Start-Process msiexec.exe -Wait -ArgumentList '/I C:\temp_az\azCopy.msi /quiet'
+Get-ChildItem -Path $tempAzDirectory -Include * | remove-Item -recur
+$azPathToAdd = "C:\Program Files (x86)\Microsoft SDKs\Azure\AzCopy"
+Add-EnvPath $azPathToAdd
+
+# Force a restart of the machine
+Restart-Computer -Force
