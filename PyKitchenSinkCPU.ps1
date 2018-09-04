@@ -320,6 +320,9 @@ python -m pip install cmake
 #Install Cython
 python -m pip install Cython
 
+#Install pytest
+python -m pip install pytest
+
 #Install SpaCy
 python -m pip install -U spacy
 # Install the Language Models for SpaCy
