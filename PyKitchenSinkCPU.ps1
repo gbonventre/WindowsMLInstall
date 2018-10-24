@@ -478,6 +478,7 @@ choco install azure-cli -y
 #python -m pip install azure-mgmt-scheduler # Install the latest Storage management library
 #python -m pip install azure-mgmt-compute # will install only the latest Compute Management library
 #python -m pip install azure-cosmosdb-table  # pip install stuff for storage tables and cosmos bs
+#python -m pip install azure-datalake-store # pip install for Azure datalake client library
 
 # Install Google Cloud PowerShell Library
 #Install-Module -Name GoogleCloud -Force
