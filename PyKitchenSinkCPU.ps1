@@ -466,7 +466,6 @@ python -m pip install dask[complete]
 # Todo add install for Stanford CoreNLP python wrapper
 
 #Install Azure PowerShell Tools
-Install-Module -Name Azure -Force
 Install-Module -Name AzureRM -Force
 
 # Install Azure CLI
