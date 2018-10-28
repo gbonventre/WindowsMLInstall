@@ -309,6 +309,7 @@ choco install firefox -y
 #c:\python36\python.exe -m pip install --upgrade pip setuptools
 # upgrade setup tools 
 python -m pip install --upgrade setuptools
+python -m pip install -U wheel
 
 # upgrade Pip installer
 python -m pip install --upgrade pip
