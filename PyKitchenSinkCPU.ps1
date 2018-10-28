@@ -313,6 +313,7 @@ python -m pip install --upgrade setuptools
 # upgrade Pip installer
 python -m pip install --upgrade pip
 python -m pip install --upgrade pip setuptools
+pip3 install --upgrade pip
 
 # Cmake 
 python -m pip install cmake
@@ -336,8 +337,12 @@ pip install https://github.com/explosion/spacy-models/releases/download/en_core_
 python -m pip install --upgrade gensim
 python -m pip install pyro4
 
+# python WIndows bindings
+python -m pip install pywinpty
+
 #Install Jupyter
 python -m pip install jupyter
+#pip3 install jupyter notebook
 
 python -m pip install --user certifi
 
