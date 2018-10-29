@@ -507,7 +507,7 @@ choco install azure-cli -y
 #https://www.microsoft.com/en-us/download/confirmation.aspx?id=56567
 # Todo Make sure that python version is 3.6
 cd C:\Python37\Scripts 
-python pip -m install pyodbc
+python -m pip install pyodbc
 # pay attention to which version of the ODBC driver is used becuase each database connection references it
 
 #https://aka.ms/vs/15/release/VC_redist.x64.exe
