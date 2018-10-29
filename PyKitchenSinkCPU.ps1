@@ -339,7 +339,9 @@ python -m pip install --upgrade gensim
 python -m pip install pyro4
 
 # python WIndows bindings
-python -m pip install pywinpty
+#python -m pip install pywinpty
+# temporary fix until pywinpty installs with better wheeel
+python -m pip install https://github.com/gbonventre/WindowsMLInstall/blob/master/pywinpty-0.5.4-cp37-cp37m-win_amd64.whl?raw=true
 
 #Install Jupyter
 python -m pip install jupyter
