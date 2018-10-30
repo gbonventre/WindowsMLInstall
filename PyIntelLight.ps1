@@ -251,3 +251,5 @@ python -m pip install intel-numpy
 #https://software.intel.com/en-us/articles/intel-optimization-for-tensorflow-installation-guide
 #python -m pip install https://storage.googleapis.com/intel-optimized-tensorflow/tensorflow-1.11.0-cp36-cp36m-linux_x86_64.whl
 
+# This is not the intel optimized version of Tensorflow
+pip3 install --upgrade tensorflow
