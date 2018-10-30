@@ -513,7 +513,8 @@ python -m pip install pyodbc
 #https://aka.ms/vs/15/release/VC_redist.x64.exe
 
 # The non-GPU version of TensorFlow
-pip3 install --upgrade tensorflow
+# the Tensorflow doesn't yet work with Python 3.7 or later
+#pip3 install --upgrade tensorflow
 
 # Install Keras
 python -m pip install keras
