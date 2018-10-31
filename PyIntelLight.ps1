@@ -1,3 +1,81 @@
+Function DownloadPython367
+{
+  <#
+  .SYNOPSIS
+  Download the 64 bit Exe install file from Python.org to the target destination and name
+  .DESCRIPTION
+  Installs Python Onto a Windows machine for all users with symbols and all tools
+  #>
+  Param (
+[string]$savePathAndName
+   )
+   $pythonUrl = "https://www.python.org/ftp/python/3.6.7/python-3.6.7-amd64.exe"
+   [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+   (New-Object System.Net.WebClient).DownloadFile($pythonUrl, $savePathAndName) 
+}
+
+
+Function InstallPythonExe
+{
+  <#
+  .SYNOPSIS
+  Installs an already downloaded Python exe onto a Windows machine
+  .DESCRIPTION
+  Installs Python Onto a Windows machine for all users with symbols and all tools
+  #>
+    Param(
+    [string]$fileToInstall
+) 
+	$Arguments = @()
+	$Arguments += "/i"
+	$Arguments += '"$installer"'
+	$Arguments += 'InstallAllUsers="1"'
+	$Arguments += 'TargetDir="C:\Python36"'
+	$Arguments += 'DefaultAllUsersTargetDir="C:\Python36"'
+    $Arguments += 'AssociateFiles="1"'
+    $Arguments += 'PrependPath="1"'
+    $Arguments += 'Include_doc="1"'
+    $Arguments += 'Include_debug="1"'
+    $Arguments += 'Include_dev="1"'
+    $Arguments += 'Include_exe="1"'
+    $Arguments += 'Include_launcher="1"'
+    $Arguments += 'InstallLauncherAllUsers="1"'
+    $Arguments += 'Include_lib="1"'
+    $Arguments += 'Include_pip="1"'
+    $Arguments += 'Include_symbols="1"'
+    $Arguments += 'Include_tcltk="1"'
+    $Arguments += 'Include_test="1"'
+    $Arguments += 'Include_tools="1"'
+    $Arguments += 'Include_launcher="1"'
+    $Arguments += 'Include_launcher="1"'
+    $Arguments += 'Include_launcher="1"'
+    $Arguments += 'Include_launcher="1"'
+    $Arguments += 'Include_launcher="1"'
+    $Arguments += 'Include_launcher="1"'
+    $Arguments += "/passive"
+	Start-Process $fileToInstall -ArgumentList $Arguments -Wait
+}
+
+
+Function GetAndInstallPython367
+{
+  <#
+  .SYNOPSIS
+  Download and Install Python onto a Windows Machine
+  .DESCRIPTION
+  Downloads from Python.org and installs Python Onto a Windows machine for all users with symbols and all tools
+  #>
+      Param (
+    [string]$saveDirectory = "C:\temp"
+   )
+   New-Item -ItemType directory -Path $saveDirectory -Force | Out-Null
+   $pyFile = "python367.exe"
+   $pythonNameLoc = Join-Path $saveDirectory $pyFile
+   DownloadPython367 $pythonNameLoc
+   InstallPythonExe $pythonNameLoc
+}
+
+
 Function Get-EnvVariableNameList {
   <#
   .SYNOPSIS
@@ -192,7 +270,6 @@ Function Remove-EnvPath {
 }
 
 
-
 # Set timezone of the server
 Set-TimeZone -Name "Eastern Standard Time"
 
@@ -221,6 +298,9 @@ Install-Module -Name PowerShellGet -Force
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 #choco install chocolatey-core.extension
 
+
+# Download and install Python 3.6.7
+GetAndInstallPython367
 
 # Update the path variables to facilitate using Pip and Pip3 to install Python packages
 Add-EnvExtension '.PY'
@@ -251,5 +331,5 @@ python -m pip install intel-numpy
 #https://software.intel.com/en-us/articles/intel-optimization-for-tensorflow-installation-guide
 #python -m pip install https://storage.googleapis.com/intel-optimized-tensorflow/tensorflow-1.11.0-cp36-cp36m-linux_x86_64.whl
 
-# This is not the intel optimized version of Tensorflow
+# This is not the Intel optimized version of Tensorflow
 pip3 install --upgrade tensorflow
