@@ -28,7 +28,6 @@ Function InstallPythonExe
 ) 
 	$Arguments = @()
 	$Arguments += "/i"
-	$Arguments += '"$installer"'
 	$Arguments += 'InstallAllUsers="1"'
 	$Arguments += 'TargetDir="C:\Python36"'
 	$Arguments += 'DefaultAllUsersTargetDir="C:\Python36"'
