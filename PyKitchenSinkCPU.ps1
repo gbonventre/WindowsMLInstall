@@ -194,6 +194,32 @@ Function Remove-EnvPath {
     Write-InformatioN $message
 }
 
+# Disable Internet Explorer Enhanced Security Configuration
+Function Disable-InternetExplorerESC {
+    $AdminKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}"
+    $UserKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}"
+    Set-ItemProperty -Path $AdminKey -Name "IsInstalled" -Value 0
+    Set-ItemProperty -Path $UserKey -Name "IsInstalled" -Value 0
+    Stop-Process -Name Explorer
+    Write-Host "IE Enhanced Security Configuration (ESC) has been disabled." -ForegroundColor Green
+}
+
+
+Function Enable-InternetExplorerESC {
+    $AdminKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}"
+    $UserKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}"
+    Set-ItemProperty -Path $AdminKey -Name "IsInstalled" -Value 1
+    Set-ItemProperty -Path $UserKey -Name "IsInstalled" -Value 1
+    Stop-Process -Name Explorer
+    Write-Host "IE Enhanced Security Configuration (ESC) has been enabled." -ForegroundColor Green
+}
+
+
+Function Disable-UserAccessControl {
+    Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value 00000000
+    Write-Host "User Access Control (UAC) has been disabled." -ForegroundColor Green    
+}
+
 
 
 # Set timezone of the server
@@ -213,6 +239,9 @@ $thumbprint = (New-SelfSignedCertificate -DnsName $env:COMPUTERNAME -CertStoreLo
 # Run WinRM configuration on command line. DNS name set to computer hostname, you may wish to use a FQDN
 $cmd = "winrm create winrm/config/Listener?Address=*+Transport=HTTPS @{Hostname=""$env:computername""; CertificateThumbprint=""$thumbprint""}"
 cmd.exe /C $cmd
+
+# Disable Internet Explorer Enhanced Security Configuration
+Disable-InternetExplorerESC
 
 #Install Nuget Package provider
 Install-PackageProvider -Name NuGet -Force
