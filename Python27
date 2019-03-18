@@ -343,6 +343,8 @@ python -m pip install urllib3==1.23
 python -m pip install wapy==1.0.0
 python -m pip install spicy==0.16.0
 python -m pip install boxsdk==1.5.5
+python -m pip install pyflux==0.4.15
+python -m pip install python-Levenshtein==0.12.0
 
 
 #Prereqs for MatPlotLib
