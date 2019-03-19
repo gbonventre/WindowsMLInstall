@@ -364,6 +364,14 @@ Add-EnvVarIfNotPresent "VS90COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual 
 
 python -m pip install matplotlib==2.2.3
 
+# Install Prerequisites for rpy2
+choco install r.project -y
+python -m pip install rpy2
+Add-EnvPath 'C:\Python27\Lib\site-packages\rpy2'
+Add-EnvPath 'C:\Python27\Lib\site-packages\rpy2\robjects'
+Add-EnvPath 'C:\Program Files\R\R-3.5.3\bin\i386'
+Add-EnvExtension '.R'
+
 
 #install the PYODBC driver for SQL Server
 # See full Install Instructions in https://docs.microsoft.com/en-us/sql/connect/python/pyodbc/step-1-configure-development-environment-for-pyodbc-python-development
