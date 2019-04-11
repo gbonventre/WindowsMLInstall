@@ -411,6 +411,12 @@ python -m pip install django
 # Install Pycharm IDE for Python
 choco install pycharm-community -y
 
+#Install VS Code
+choco install vscode -y
+choco install vscode-powershell -y
+choco install vscode-csharp -y
+choco install vscode-mssql -y
+
 # Installs the browsers
 choco install firefox -y
 choco install googlechrome -y
@@ -422,6 +428,17 @@ choco install mysql.workbench -y
 #choco install mysql-connector -y # .Net MySQL connector
 choco install mysql.utilities -y
 choco install sql-server-management-studio -y
+
+
+
+#Open up ports 3305 and 3306 on the OS level commonly used by MySQL
+New-NetFirewallRule -DisplayName "Allow Outbound Port 3305" -Direction Outbound -LocalPort 3305 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "Allow Outbound Port 3306" -Direction Outbound -LocalPort 3306 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "Allow Inbound Port 3305" -Direction Inbound -LocalPort 3305 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "Allow Inbound Port 3306" -Direction Inbound -LocalPort 3306 -Protocol TCP -Action Allow
+
+
+
 
 
 Restart-Computer -Force
