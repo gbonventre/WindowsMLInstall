@@ -366,7 +366,8 @@ python -m pip install matplotlib==2.2.3
 
 # Install Prerequisites for rpy2
 choco install r.project -y
-python -m pip install rpy2==2.7.8
+#python -m pip install rpy2==2.7.8
+python -m pip install https://github.com/gbonventre/WindowsMLInstall/blob/master/rpy2-2.7.8-cp27-none-win_amd64.whl?raw=true
 Add-EnvPath 'C:\Python27\Lib\site-packages\rpy2'
 Add-EnvPath 'C:\Python27\Lib\site-packages\rpy2\robjects'
 Add-EnvPath 'C:\Program Files\R\R-3.5.3\bin\i386'
