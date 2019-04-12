@@ -421,15 +421,25 @@ choco install vscode-mssql -y
 choco install firefox -y
 choco install googlechrome -y
 
-#install SQL Related Clients and softwares
-choco install heidisql -y
+#MySQL Related items
 choco install mysql -y
 choco install mysql.workbench -y
 #choco install mysql-connector -y # .Net MySQL connector
 choco install mysql.utilities -y
+
+#Install Postgres
+choco install postgresql -y --params '/Password:hunter2' --params-global
+choco install pgadmin4 -y
+
+#install SQL Related Clients and softwares
+choco install heidisql -y
 choco install sql-server-management-studio -y
 
 
+#Install some coding Utilities
+choco install postman -y
+choco install tailblazer -y
+choco install filezilla -y
 
 #Open up ports 3305 and 3306 on the OS level commonly used by MySQL
 New-NetFirewallRule -DisplayName "Allow Outbound Port 3305" -Direction Outbound -LocalPort 3305 -Protocol TCP -Action Allow
@@ -437,7 +447,17 @@ New-NetFirewallRule -DisplayName "Allow Outbound Port 3306" -Direction Outbound 
 New-NetFirewallRule -DisplayName "Allow Inbound Port 3305" -Direction Inbound -LocalPort 3305 -Protocol TCP -Action Allow
 New-NetFirewallRule -DisplayName "Allow Inbound Port 3306" -Direction Inbound -LocalPort 3306 -Protocol TCP -Action Allow
 
+#Open up ports 5432 and 5433 on the OS level (Postgres Ports)
+New-NetFirewallRule -DisplayName "Allow Outbound Port 5432" -Direction Outbound -LocalPort 5432 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "Allow Outbound Port 5433" -Direction Outbound -LocalPort 5433 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "Allow Inbound Port 5432" -Direction Inbound -LocalPort 5432 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "Allow Inbound Port 5433" -Direction Inbound -LocalPort 5433 -Protocol TCP -Action Allow
 
+#Open up ports 1433 and 1434 on the OS level (SQL Server)
+New-NetFirewallRule -DisplayName "Allow Outbound Port 1433" -Direction Outbound -LocalPort 1433 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "Allow Outbound Port 1434" -Direction Outbound -LocalPort 1434 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "Allow Inbound Port 1433" -Direction Inbound -LocalPort 1433 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "Allow Inbound Port 1434" -Direction Inbound -LocalPort 1434 -Protocol TCP -Action Allow
 
 
 
