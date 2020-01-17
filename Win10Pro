@@ -326,6 +326,9 @@ Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
 # If the firewall does not exist, create one
 #New-NetFirewallRule -Name sshd -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
 
+# Enable Hyper V Virtual Machine Hypervisor
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+
 
 # Install Keeper Security Desktop App
 choco install keeper -y
