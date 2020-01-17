@@ -229,7 +229,7 @@ Set-TimeZone -Name "Eastern Standard Time"
 Set-ExecutionPolicy Bypass -Scope Process -Force
 
 # Ensure PS remoting is enabled, although this is enabled by default for Azure VMs
-Enable-PSRemoting -Force
+#Enable-PSRemoting -Force
 
 # Create rule in Windows Firewall
 New-NetFirewallRule -Name "WinRM HTTPS" -DisplayName "WinRM HTTPS" -Enabled True -Profile Any -Action Allow -Direction Inbound -LocalPort 5986 -Protocol TCP
