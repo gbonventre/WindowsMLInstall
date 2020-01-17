@@ -1,3 +1,5 @@
+# Optimized for Windows Server
+
 # Comment out the parts you don't need to reduce isntallation time and disk usage
 
 
