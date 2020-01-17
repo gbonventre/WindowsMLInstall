@@ -374,6 +374,12 @@ choco install lunacy -y
 # Install Zeplin UX Design App 
 choco install zeplin -y
 
+# MySQL Related items
+choco install mysql.workbench -y
+choco install mysql-odbc -y
+
+
+
 # Install .Net Core Runtime 
 choco install dotnetcore -y
 
