@@ -390,7 +390,7 @@ choco install pulumi -y
 
 
 # THIS NEEDS WORK ON THE PATH SIDE of things
-# *** Install all the Visual Studio Related items ***
+# *** Install all the Visual Studio Related items Just to get the C++ compiler - yes it is a heavy install just for the C++ compiler***
 # Install build stuff and C and C++ items needed by some of the Python NLP Libraries to work faster
 # You can skip these installs if you are not using any of the NLP Libraries like Gensim or SpaCy
 choco install microsoft-build-tools -y
@@ -398,9 +398,11 @@ choco install kb2999226 -y
 choco install vcredist140 -y
 choco install vcredist2017 -y
 choco install vcredist-all -y
-choco install visualstudio2017buildtools -y
+choco install visualstudio2019-workload-netcorebuildtools -y
+choco install visualstudio2019buildtools -y
+
 choco install visualcppbuildtools -y
-choco install visualstudio2019community -y #Just to get the C++ compiler - yes it is a heavy install just for the C++ compiler
+choco install visualstudio2019community -y 
 # Python Tools for Visual Studio
 choco install visualstudio2019-workload-python -y
 choco install visualstudio2019-workload-azurebuildtools -y
@@ -426,7 +428,7 @@ Add-EnvVarIfNotPresent "VS90COMNTOOLS" $newVSpath
 # Install Python 3.7
 # Todo need to check what version of Python 3 is installed
 # Python for windows changed the default install path. This forces it back to the old path for package compatibility
-choco install python --version=3.7.6.20200110 --params "/InstallDir:C:\Python37" -y
+choco install python --version=3.7.6 --params "/InstallDir:C:\Python37" -y
 # Update the path variables to facilitate using Pip and Pip3 to install Python packages
 Add-EnvExtension '.PY'
 Add-EnvExtension '.PYW'
@@ -465,7 +467,7 @@ For ($i=0; $i -le 10; $i++) {
 
 
 
-#c:\python36\python.exe -m pip install --upgrade pip setuptools
+#c:\python37\python.exe -m pip install --upgrade pip setuptools
 # upgrade setup tools 
 python -m pip install --upgrade setuptools
 python -m pip install -U wheel
