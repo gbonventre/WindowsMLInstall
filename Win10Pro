@@ -466,8 +466,8 @@ For ($i=0; $i -le 10; $i++) {
 # msiexec /i C:\temp_provision\Cpp.msi ALLUSERS=1 /q
 
 
-
-#c:\python37\python.exe -m pip install --upgrade pip setuptools
+# Upgrade Pip
+python -m pip install --upgrade pip setuptools
 # upgrade setup tools 
 python -m pip install --upgrade setuptools
 python -m pip install -U wheel
