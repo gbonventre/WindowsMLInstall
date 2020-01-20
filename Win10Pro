@@ -339,7 +339,7 @@ Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -n
 choco install keeper -y
 
 #Install Azure PowerShell Tools
-Install-Module -Name AzureRM -Force
+Install-Module -Name Az -AllowClobber -Force
 
 # Install Azure CLI - 
 choco install azure-cli -y
