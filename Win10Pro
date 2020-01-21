@@ -196,7 +196,7 @@ Function Remove-EnvPath {
     Write-InformatioN $message
 }
 
-# Disable Internet Explorer Enhanced Security Configuration
+# Disable Internet Explorer Enhanced Security Configuration - Used in Windows Server INstalls
 Function Disable-InternetExplorerESC {
     $AdminKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}"
     $UserKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}"
@@ -207,20 +207,6 @@ Function Disable-InternetExplorerESC {
 }
 
 
-Function Enable-InternetExplorerESC {
-    $AdminKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}"
-    $UserKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}"
-    Set-ItemProperty -Path $AdminKey -Name "IsInstalled" -Value 1
-    Set-ItemProperty -Path $UserKey -Name "IsInstalled" -Value 1
-    Stop-Process -Name Explorer
-    Write-Host "IE Enhanced Security Configuration (ESC) has been enabled." -ForegroundColor Green
-}
-
-
-Function Disable-UserAccessControl {
-    Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value 00000000
-    Write-Host "User Access Control (UAC) has been disabled." -ForegroundColor Green    
-}
 
 
 
@@ -228,20 +214,6 @@ Function Disable-UserAccessControl {
 Set-TimeZone -Name "Eastern Standard Time"
 
 Set-ExecutionPolicy Bypass -Scope Process -Force
-
-# Ensure PS remoting is enabled, although this is enabled by default for Azure VMs
-#Enable-PSRemoting -Force
-
-# Create rule in Windows Firewall
-#New-NetFirewallRule -Name "WinRM HTTPS" -DisplayName "WinRM HTTPS" -Enabled True -Profile Any -Action Allow -Direction Inbound -LocalPort 5986 -Protocol TCP
-
-# Create Self Signed certificate and store thumbprint. Used if enabling remoting
-#$thumbprint = (New-SelfSignedCertificate -DnsName $env:COMPUTERNAME -CertStoreLocation Cert:\LocalMachine\My).Thumbprint
-
-# Run WinRM configuration on command line. DNS name set to computer hostname, you may wish to use a FQDN
-#$cmd = "winrm create winrm/config/Listener?Address=*+Transport=HTTPS @{Hostname=""$env:computername""; CertificateThumbprint=""$thumbprint""}"
-#cmd.exe /C $cmd
-
 
 #Install Nuget Package provider. Many Powershell libraries rely on Nuget
 Install-PackageProvider -Name NuGet -Force
@@ -252,7 +224,6 @@ Install-Module -Name PowerShellGet -Force
 # Facilitates using the Windows package installer Chocolatey
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 #choco install chocolatey-core.extension
-
 
 # Install 7zip compression software
 choco install 7zip -y
@@ -301,7 +272,6 @@ npm i -g azure-functions-core-tools@3 --unsafe-perm true
 # Install Sysinternals Tools - these are a number of Windows tools used to fix Windows issues
 #choco install sysinternals -y
 
-
 # Install SQL Server Management Studio, the heavy weight SQL Server IDE
 choco install sql-server-management-studio -y
 
@@ -310,7 +280,6 @@ Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-L
 # ** NOTE THAT A RESTAT IS REQUIRED BEFORE INSTALLING A PARTICULAR LINUX DISTRO
 #Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing
 #Add-AppxPackage .\Ubuntu.appx
-
 
 # Install Putty, the well knowN SSH Client
 choco install putty -y
@@ -353,7 +322,6 @@ choco install azure-data-studio -y
 # Azure Storage Explorer
 choco install microsoftazurestorageexplorer -y
 
-
 # Postman - API and Http utility tool
 choco install postman -y
 
@@ -385,12 +353,11 @@ choco install mysql-odbc -y
 # Install .Net Core Runtime used to run the OS independent version of the .Net runtime
 choco install dotnetcore -y
 
-# Install Pulumi - An cloud infrastructure as code tool
+# Install Pulumi - A cloud infrastructure as code tool
 choco install pulumi -y
 
-
-# THIS NEEDS WORK ON THE PATH SIDE of things
-# *** Install all the Visual Studio Related items Just to get the C++ compiler - yes it is a heavy install just for the C++ compiler***
+# *** Install all the Visual Studio Community Edition 2019 Related items Just to get the C++ compiler
+# *** This is only needed if you use Visual Studio or need the compiler in Windows
 # Install build stuff and C and C++ items needed by some of the Python NLP Libraries to work faster
 # You can skip these installs if you are not using any of the NLP Libraries like Gensim or SpaCy
 choco install microsoft-build-tools -y
@@ -400,7 +367,6 @@ choco install vcredist2017 -y
 choco install vcredist-all -y
 choco install visualstudio2019-workload-netcorebuildtools -y
 choco install visualstudio2019buildtools -y
-
 choco install visualcppbuildtools -y
 choco install visualstudio2019community -y 
 # Python Tools for Visual Studio
@@ -466,15 +432,13 @@ For ($i=0; $i -le 10; $i++) {
 # msiexec /i C:\temp_provision\Cpp.msi ALLUSERS=1 /q
 
 
-# Upgrade Pip
+# Upgrade Pip - Yes this is redundant and needs to be cleaned up
 python -m pip install --upgrade pip setuptools
 # upgrade setup tools 
 python -m pip install --upgrade setuptools
 python -m pip install -U wheel
-
 # upgrade Pip installer
 python -m pip install --upgrade pip
-python -m pip install --upgrade pip setuptools
 pip3 install --upgrade pip
 
 # Cmake 
@@ -520,7 +484,7 @@ python -m pip install -U nltk
 # Todo issue installing NLTK corpora
 $nltkDirectory = "C:\nltk_data"
 #New-Item -ItemType directory -Path $nltkDirectory -Force | Out-Null
-cd C:\nltk_data
+#cd C:\nltk_data
 # can't get punkt installed
 #python -m nltk.downloader punkt 
 # Download the NLTK popular corpora
@@ -536,7 +500,6 @@ cd C:\nltk_data
 #Install TextBlob
 python -m pip install -U textblob
 python -m textblob.download_corpora
-
 
 #Prereqs for MatPlotLib
 choco install ffmpeg -y
@@ -591,7 +554,7 @@ python -m pip install scipy
 #Instal PatSy
 python -m pip install patsy
 
-#Install Seaborne - lots of dependencies needed. So install last
+#Install Seaborne - lots of dependencies needed. So install after some other libraries installed
 python -m pip install seaborn
 
 #Install Nose Test Suite
@@ -634,7 +597,7 @@ python -m pip install dask[complete]
 
 # Todo add install for Stanford CoreNLP python wrapper
 
-
+# Http Server
 python -m pip install gunicorn
 
 
@@ -688,5 +651,5 @@ python -m pip install boto3
 #Install-Module -Name AWSPowerShell -Force
 
 
-
+# RESTART AT END 
 Restart-Computer -Force
