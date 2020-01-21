@@ -1,4 +1,4 @@
-# Comment out the parts you don't need to reduce isntallation time and disk usage
+# Comment out the parts you don't need to reduce installation time and disk usage
 
 # Optimized For Windows 10 Pro
 # Assumes C Drive is your install drive
@@ -213,9 +213,10 @@ Function Disable-InternetExplorerESC {
 # Set timezone of the machine to Eastern Time
 Set-TimeZone -Name "Eastern Standard Time"
 
+# Allows Powershell scripts to be run without constantly asking for heightened privilages during this install
 Set-ExecutionPolicy Bypass -Scope Process -Force
 
-#Install Nuget Package provider. Many Powershell libraries rely on Nuget
+#Install Nuget Package provider. Many Powershell libraries rely on Nuget .Net packages
 Install-PackageProvider -Name NuGet -Force
 
 # Install Powershell Get to facilitate installing packages from PowerShellGallery.com
@@ -281,14 +282,15 @@ Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-L
 #Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing
 #Add-AppxPackage .\Ubuntu.appx
 
-# Install Putty, the well knowN SSH Client
+# Install Putty, the well known SSH Client
 choco install putty -y
 
 # Turn on Windows Native SSH Client
 # Install the OpenSSH Client
 Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
 
-# Install SSH Server  See https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse
+# Install SSH Server  
+# See https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse
 # Install the OpenSSH Server
 # Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 #Start-Service sshd
@@ -310,7 +312,7 @@ choco install keeper -y
 #Install Azure PowerShell Tools
 Install-Module -Name Az -AllowClobber -Force
 
-# Install Azure CLI - 
+# Install Azure CLI - A python command line tool for working with Azure
 choco install azure-cli -y
 
 # Azure Core Function Tools
@@ -624,7 +626,7 @@ python -m pip install keras
 pip3 install torch==1.4.0+cpu torchvision==0.5.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
 # Install Cognitive Toolkit (formerly CNTK) non-GPU version
-# Microsoft CNTK only supports Python 3.6 no Python 3.7
+# Microsoft CNTK only supports Python 3.6 no Python 3.7 yet
 #python -m pip install cntk
 
 
