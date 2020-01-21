@@ -506,7 +506,7 @@ python -m pip install https://github.com/gbonventre/WindowsMLInstall/blob/master
 
 #Install Jupyter
 python -m pip install jupyter
-#pip3 install jupyter notebook
+pip3 install jupyter notebook
 
 python -m pip install --user certifi
 
@@ -519,7 +519,7 @@ python -m pip install -U nltk
 #Make the temp folder that holds NLTK corpora
 # Todo issue installing NLTK corpora
 $nltkDirectory = "C:\nltk_data"
-New-Item -ItemType directory -Path $nltkDirectory -Force | Out-Null
+#New-Item -ItemType directory -Path $nltkDirectory -Force | Out-Null
 cd C:\nltk_data
 # can't get punkt installed
 #python -m nltk.downloader punkt 
@@ -531,7 +531,7 @@ cd C:\nltk_data
 #python -m nltk.downloader all
 
 # python -c "import nltk; nltk.download('punkt')"
-cd C:\Windows\System32
+#cd C:\Windows\System32
 
 #Install TextBlob
 python -m pip install -U textblob
@@ -554,8 +554,8 @@ $freetypeDestination = "C:\Windows\System32\freetype.dll"
 $freetypeWebclient.DownloadFile($freetypeUrl,$freetypeDestination)
 
 #Install MatPlotLib
-Add-EnvVarIfNotPresent "VS100COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\"
-Add-EnvVarIfNotPresent "VS90COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\"
+#Add-EnvVarIfNotPresent "VS100COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\"
+#Add-EnvVarIfNotPresent "VS90COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\"
 #$matPlotLibDirectory = "C:\matPlotLib"
 #New-Item -ItemType directory -Path $matPlotLibDirectory -Force | Out-Null
 #cd C:\matPlotLib
@@ -565,16 +565,16 @@ Add-EnvVarIfNotPresent "VS90COMNTOOLS" "C:\Program Files (x86)\Microsoft Visual 
 #python matplotlib-winbuild\buildall.py
 #cd C:\Windows\System32
 ## missing dependencies
-##python -m pip install matplotlib
-$tempDirectory = "C:\temp"
-New-Item -ItemType directory -Path $tempDirectory -Force | Out-Null
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-$matWebClient = New-Object System.Net.WebClient
-$matUrl = "https://github.com/gbonventre/WindowsMLInstall/raw/master/matplotlib-2.2.2-cp37-cp37m-win_amd64.whl"
-$matDestination = "C:\temp\matplotlib-2.2.2-cp37-cp37m-win_amd64.whl"
-$matWebClient.DownloadFile($matUrl, $matDestination)
-cd $tempDirectory 
-python -m pip install --user matplotlib-2.2.2-cp37-cp37m-win_amd64.whl
+python -m pip install matplotlib
+#$tempDirectory = "C:\temp"
+#New-Item -ItemType directory -Path $tempDirectory -Force | Out-Null
+#[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+#$matWebClient = New-Object System.Net.WebClient
+#$matUrl = "https://github.com/gbonventre/WindowsMLInstall/raw/master/matplotlib-2.2.2-cp37-cp37m-win_amd64.whl"
+#$matDestination = "C:\temp\matplotlib-2.2.2-cp37-cp37m-win_amd64.whl"
+#$matWebClient.DownloadFile($matUrl, $matDestination)
+#cd $tempDirectory 
+#python -m pip install --user matplotlib-2.2.2-cp37-cp37m-win_amd64.whl
 
 # Install statsmodels
 python -m pip install -U statsmodels
@@ -635,8 +635,40 @@ python -m pip install dask[complete]
 # Todo add install for Stanford CoreNLP python wrapper
 
 
+python -m pip install gunicorn
 
-# Install Azure related Python libraries
+
+#install the PYODBC driver for SQL Server
+# See full Install Instructions in https://docs.microsoft.com/en-us/sql/connect/python/pyodbc/step-1-configure-development-environment-for-pyodbc-python-development
+# download and install this - I think that this can be replaced with the chocolatey package
+#https://www.microsoft.com/en-us/download/confirmation.aspx?id=56567
+# Todo Make sure that python version is 3.7
+cd C:\Python37\Scripts 
+python -m pip install pyodbc
+# pay attention to which version of the ODBC driver is used becuase each database connection references it
+
+
+#https://aka.ms/vs/15/release/VC_redist.x64.exe
+
+# The non-GPU version of TensorFlow
+pip install tensorflow
+
+# Install Keras
+python -m pip install keras
+
+# Install PyTourch Non-GPU Version
+# https://pytorch.org/get-started/locally/
+pip3 install torch==1.4.0+cpu torchvision==0.5.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+
+# Install Cognitive Toolkit (formerly CNTK) non-GPU version
+# Microsoft CNTK only supports Python 3.6 no Python 3.7
+#python -m pip install cntk
+
+
+#Install Python AWS Client Library
+python -m pip install boto3
+
+# Install Azure related Python libraries there are ones in preview so wait before installing these
 #python -m pip install azure                
 #python -m pip install azure-batch          # Install the latest Batch runtime library
 #python -m pip install azure-mgmt-scheduler # Install the latest Storage management library
@@ -655,31 +687,6 @@ python -m pip install dask[complete]
 # Install AWS PowerShell Library
 #Install-Module -Name AWSPowerShell -Force
 
-#Install Python AWS Client Library
-#python -m pip install boto3
 
-#install the PYODBC driver for SQL Server
-# See full Install Instructions in https://docs.microsoft.com/en-us/sql/connect/python/pyodbc/step-1-configure-development-environment-for-pyodbc-python-development
-# download and install this - I think that this can be replaced with the chocolatey package
-#https://www.microsoft.com/en-us/download/confirmation.aspx?id=56567
-# Todo Make sure that python version is 3.7
-cd C:\Python37\Scripts 
-python -m pip install pyodbc
-# pay attention to which version of the ODBC driver is used becuase each database connection references it
-
-#https://aka.ms/vs/15/release/VC_redist.x64.exe
-
-# The non-GPU version of TensorFlow
-# the Tensorflow doesn't yet work with Python 3.7 or later
-#pip3 install --upgrade tensorflow
-
-# Install Keras
-python -m pip install keras
-
-# Install PyTourch
-python -m pip install torch
-
-# Install Cognitive Toolkit (formerly CNTK) non-GPU version
-python -m pip install cntk
 
 Restart-Computer -Force
